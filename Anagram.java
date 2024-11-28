@@ -8,7 +8,12 @@ public class Anagram {
 		//System.out.println(isAnagram("Tom Marvolo Riddle","I am Lord Voldemort")); // true
 
 		// Tests the preProcess function.
-		System.out.println(randomAnagram("kkkj jjk  kkjjj"));
+		System.out.println("l");
+		for(int i =0;i<10;i++){
+			System.out.println(randomAnagram("hello") + randomAnagram("hello").length());
+		}
+		//System.out.println(randomAnagram("AB35 B"));
+		
 		
 		// Tests the randomAnagram function.
 		//System.out.println("silent and " + randomAnagram("silent") + " are anagrams.");
@@ -30,9 +35,9 @@ public class Anagram {
 	public static boolean isAnagram(String str1, String str2) {
 		Boolean bool=false;
 		String word1=preProcess(str1);//מילה ראשונה שנשלחת לפעולה שמחזירה מילה בלי תווים שהן לא אותיות או רווחים
-		String word2=preProcess(str1);// מילה שנייה שנשלחה לפעולה שמחזירה מילה בלי תויים שהן לא אותיות או רווחים
-		String newWord1=(" ");
-		String newWord2=(" ");
+		String word2=preProcess(str2);// מילה שנייה שנשלחה לפעולה שמחזירה מילה בלי תויים שהן לא אותיות או רווחים
+		String newWord1=("");
+		String newWord2=("");
 		for(int i='a';i<='z';i++)
 		{
 			for(int j=0;j<word1.length();j++)
@@ -54,47 +59,68 @@ public class Anagram {
 	public static String preProcess(String str) {
 		str = str.toLowerCase(); //הסטרינג שנתון באותיות קטנות
 		char [] strletter=new char[str.length()]; //מערך אותיות בלי שום דבר שהוא לא אות
+		int j=0;
 		for(int i=0;i<str.length();i++)
 		{
-			if((str.charAt(i) >= 97 && str.charAt(i) <= 122) || str.charAt(i) == ' ')
+			if(((str.charAt(i) >= 'a' && str.charAt(i) <= 'z')) || str.charAt(i) == ' ')
 			{
-				strletter[i]=str.charAt(i);
+				strletter[j]=str.charAt(i);
+				j++;
 			}
 		}
-		String newWord=(" ");
-		for(int i=0;i<strletter.length;i++)
+		String newWord="";
+		for(int i=0;i<j;i++)
 		{
 			newWord+=strletter[i];
 		}
 		return newWord;
 	} 
-	   
+
 	// Returns a random anagram of the given string. The random anagram consists of the same
 	// characters as the given string, re-arranged in a random order. 
 	public static String randomAnagram(String str) 
 	{
 		Boolean bool=true;
 		String word = preProcess(str);
-		System.out.println(word);
-		String randomWord=("");
-		for(int i=word.length()-1 ;i>=0;i--)
+		String randomWord="";
+		int random=0;
+		for(int i='a';i<='z';i++)
 		{
-			randomWord+=word.charAt(i);
-		}
-		if(randomWord.equals(word))
-		{
-			for(int i=0;i<(randomWord.length())&&(bool==false);i++)
+			for(int j=0;j<word.length();j++)
 			{
-				for(int k=i+1;k<randomWord.length();k++)
-				{
-					char ch=randomWord.charAt(i);
-					char ch2=randomWord.charAt(k);
-					randomWord=randomWord.replace(randomWord.charAt(i),randomWord.charAt(k));
-					randomWord=randomWord.replace(ch2,ch);
-					bool=true;
-				}
+				if(word.charAt(j)==i)
+					randomWord+=word.charAt(j);
 			}
 		}
-		return randomWord;
+		char [] strletter=new char[randomWord.length()];
+		for(int i=0;i<randomWord.length();i++)
+		{
+			strletter[i]=randomWord.charAt(i);
+		}
+		int length=randomWord.length();
+		randomWord=(" ");
+		for(int i=0;i<length;i++)
+		{
+			while(bool==true)
+			{
+				random=(int)(Math.random()*length);
+				if(strletter[random]!='\0')
+				{
+					randomWord+=strletter[random];
+					strletter[random]=('\0');
+					bool=false;
+				}
+			}
+			bool=true;
+		}
+		
+		// שמתי לב שכאשר אני מחזירה את המילה הרנדנומלית החדשה אני מקבלת מילה עם רווח לפניה
+		// הפיתרון שלי היה פשוט ליצור סטרינג חדש החל מהתו השני 
+		String x="";
+		for(int i=1; i<randomWord.length(); i++)
+		{
+			x+=randomWord.charAt(i);
+		}
+		return x;
 	}
 }
